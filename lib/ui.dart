@@ -51,7 +51,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   veriOku() {
-    print("okundu.");
+    // Firebaseden veri okuma.
+    DocumentReference veriYolu =
+        FirebaseFirestore.instance.collection("Urunler").doc(ad);
+
+    veriYolu.get().then((alinanVeri) {
+      print(alinanVeri.data);
+    });
   }
 
   veriGuncelle() {
