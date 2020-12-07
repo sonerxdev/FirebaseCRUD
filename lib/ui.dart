@@ -56,16 +56,43 @@ class _HomePageState extends State<HomePage> {
         FirebaseFirestore.instance.collection("Urunler").doc(ad);
 
     veriYolu.get().then((alinanVeri) {
-      print(alinanVeri.data);
+      print(alinanVeri.data()["urunAdi"]);
+      print(alinanVeri.data()["urunId"]);
+      print(alinanVeri.data()["urunKategori"]);
+      print(alinanVeri.data()["urunFiyat"]);
     });
   }
 
   veriGuncelle() {
-    print("Güncellendi.");
+    // veriYolu
+
+    DocumentReference veriYolu =
+        FirebaseFirestore.instance.collection("Urunler").doc(ad);
+
+    // Map ile çoklu veri göndericez.
+
+    Map<String, dynamic> urunGuncelVeri = {
+      "urunAdi": ad,
+      "urunId": id,
+      "urunKategori": kategori,
+      "urunFiyat": fiyat,
+    };
+
+    veriYolu.update(urunGuncelVeri).whenComplete(() {
+      print(ad + " Güncellendi.");
+    });
   }
 
   veriSil() {
-    print("Silindi.");
+    // Veri Yolu
+
+    DocumentReference veriYolu =
+        FirebaseFirestore.instance.collection("Urunler").doc(ad);
+    //sildirme işlemi
+
+    veriYolu.delete().whenComplete(() {
+      print(ad + " Silindi.");
+    });
   }
 
   @override
@@ -117,50 +144,53 @@ class _HomePageState extends State<HomePage> {
               },
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              RaisedButton(
-                child: Text("Ekle"),
-                textColor: Colors.white,
-                color: Colors.cyan,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16)),
-                onPressed: () {
-                  veriEkle();
-                },
-              ),
-              RaisedButton(
-                child: Text("Oku"),
-                textColor: Colors.white,
-                color: Colors.red,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16)),
-                onPressed: () {
-                  veriOku();
-                },
-              ),
-              RaisedButton(
-                child: Text("Güncelle"),
-                textColor: Colors.white,
-                color: Colors.green,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16)),
-                onPressed: () {
-                  veriGuncelle();
-                },
-              ),
-              RaisedButton(
-                child: Text("Sil"),
-                textColor: Colors.white,
-                color: Colors.black,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16)),
-                onPressed: () {
-                  veriSil();
-                },
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                RaisedButton(
+                  child: Text("Ekle"),
+                  textColor: Colors.white,
+                  color: Colors.cyan,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16)),
+                  onPressed: () {
+                    veriEkle();
+                  },
+                ),
+                RaisedButton(
+                  child: Text("Oku"),
+                  textColor: Colors.white,
+                  color: Colors.red,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16)),
+                  onPressed: () {
+                    veriOku();
+                  },
+                ),
+                RaisedButton(
+                  child: Text("Güncelle"),
+                  textColor: Colors.white,
+                  color: Colors.green,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16)),
+                  onPressed: () {
+                    veriGuncelle();
+                  },
+                ),
+                RaisedButton(
+                  child: Text("Sil"),
+                  textColor: Colors.white,
+                  color: Colors.black,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16)),
+                  onPressed: () {
+                    veriSil();
+                  },
+                ),
+              ],
+            ),
           )
         ],
       ),
