@@ -191,6 +191,65 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text("Ürün Adı"),
+                ),
+                Expanded(
+                  child: Text("Ürün ID"),
+                ),
+                Expanded(
+                  child: Text("Ürün Kategori"),
+                ),
+                Expanded(
+                  child: Text("Ürün Fiyat"),
+                ),
+              ],
+            ),
+          ),
+          StreamBuilder(
+            stream:
+                FirebaseFirestore.instance.collection("Urunler").snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data.documents.length,
+                    itemBuilder: (context, index) {
+                      DocumentSnapshot dokumanSnapshot =
+                          snapshot.data.documents[index];
+
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              dokumanSnapshot["urunAdi"],
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              dokumanSnapshot["urunId"],
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              dokumanSnapshot["urunKategori"],
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              dokumanSnapshot["urunFiyat"].toString(),
+                            ),
+                          ),
+                        ],
+                      );
+                    });
+              }
+            },
           )
         ],
       ),
